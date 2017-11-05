@@ -2,7 +2,7 @@
 
 **New feature study for Java7, Java8, Google Guava, mockIto.**
 
-This is my study in 201604.
+The study is completed in 201604.
 
 ```
        .-------------.       .    .   *       *   
