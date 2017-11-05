@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import com.google.common.collect.Lists;
@@ -83,6 +84,9 @@ public class Chapter1Study extends TestCase
         //如果不同接口都定义的同名方法，则编译出错，由开发人员处理。开发人员可以人工选择调用其中一个接口，或者从头写。P15
         wordList.forEach(System.out::println);
         
+        IntStream intstream = wordList.stream().mapToInt(String::length);
+        int[] lengthIntArr = intstream.toArray();
+        System.out.println("lengthIntArr:" + Arrays.toString(lengthIntArr));
     }
     
     class Greeter

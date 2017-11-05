@@ -7,13 +7,29 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
 
 import junit.framework.TestCase;
 
 public class NewFeatureTest extends TestCase
 {
+    Logger logger = null;
+    
     public void test_int()
     {
+        int x = 0b11111111;
+        int y = 0xff;
+        int z = 255;
+        int m = 0377;
+
+        assertEquals(x, y);
+        assertEquals(y, z);
+        assertEquals(y, z);
+        assertEquals(z, m);
+        
         assertEquals(5, 0b00101);
         
         //下划线用来分隔数字，方便阅读。注意只能插入在数字中间。
@@ -33,10 +49,11 @@ public class NewFeatureTest extends TestCase
 //        {
 //            
 //        }
-        
+       
+         
           try
           {
-              Integer.parseInt("Hello");
+              doSomething();
           }
           catch(NumberFormatException |  IndexOutOfBoundsException e)
           {
@@ -44,6 +61,12 @@ public class NewFeatureTest extends TestCase
           }
     }
     
+    private void doSomething()
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
     //能够被try语句所管理的资源需要java类实现java.lang.AutoCloseable接口。这个接口定义于JDK1.7.
     //数据库相关的Connection, ResultSet, Statement继承了该接口（JDK1.7及以上版本）
     public void test_try_with_resources() throws IOException

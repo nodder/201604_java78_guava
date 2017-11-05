@@ -5,13 +5,14 @@
     <groupId>name.cdd.study</groupId>
     <artifactId>study-newfeature</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>bundle</packaging>
+    <packaging>jar</packaging>
 
     <name>New Features</name>
     <description>
-        Java7, Java8, Google Guava, mockIto features.
+        New Features for something I have studied. 
+        
+        Java7, Java8, Google Guava, mockIto, cglibs.
   </description>
-
 
     <dependencies>
         <dependency>
@@ -32,26 +33,6 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-bundle-plugin</artifactId>
-                <extensions>true</extensions>
-                <configuration>
-                    <instructions>
-                        <!-- <Export-Package>和<Private-Package>指令告诉插件生成bundle 
-                            jar包的内容。 其中Export-Package是导出包，让别的bundle可以导入包。 Private-Package指令为复制包和包中的类，但是不导出。 
-                            如果一个包在Export-Package和Private-Package中都写了，那么该包一定会被导出，因为Export-Package优先级高。 
-                            如果我们的包不需要其他bundle manifest。如果包不需要其他bundle使用，那么只写Private-Package就可以了 Import-Package 
-                            不需在bundle manifest清单中描述。会自动智能的导入。 （翻者认为还是手动写为好。例如内容为： !*,com.apache.common.files,com.equinox.osgi 
-                            开始写!*表示不导入全部， 然后需要导入的一一写明。这样比较好该插件太智能，自己会导入依赖的bundle classpath中无用的包）。 Bundle-Activator为此bundle激活后立即执行的方法。 -->
-                        <Bundle-Version>${pom.version}</Bundle-Version> <!-- MANIFEST.MF中的Bundle-Version 待验证！ -->
-                        <Export-Package>name.cdd.study.java7.*,name.cdd.study.guava.*</Export-Package> <!-- tells the plugin which of the available packages to copy into the bundle 
-                            and export. take precedence over Private-Package -->
-                        <Bundle-Activator></Bundle-Activator>
-                    </instructions>
-                </configuration>
-            </plugin>
-            
-            <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.5.1</version>
                 <configuration>
@@ -61,24 +42,7 @@
                     <executable>C:\jdk1.8\bin\javac.exe</executable> -->
                 </configuration>
             </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>2.8</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <includeScope>compile</includeScope> <!-- 排除所有scope为test的依赖 -->
-                </configuration>
-            </plugin>
-
+            
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -86,7 +50,6 @@
                     <skip>true</skip> <!-- 跳过测试 -->
                 </configuration>
             </plugin>
-
         </plugins>
     </build>
 </project>

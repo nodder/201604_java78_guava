@@ -27,7 +27,8 @@ public class Chapter2 extends TestCase
 {
     public void test1() 
     {
-        long result = Stream.of("aa", "bc", "c").parallel().filter(w -> w.length() > 1).count();
+        long result = Stream.of("aa", "bc", "c").filter(w -> w.length() > 1).count();
+        
         assertEquals(2, result);
     }
     

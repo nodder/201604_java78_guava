@@ -1,13 +1,6 @@
 package name.cdd.study.java8;
 
 import static java.lang.System.out;
-import static java.util.stream.Collectors.counting;
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.mapping;
-import static java.util.stream.Collectors.maxBy;
-import static java.util.stream.Collectors.summarizingInt;
-import static java.util.stream.Collectors.summingInt;
-import static java.util.stream.Collectors.toSet;
 import static org.junit.Assert.assertArrayEquals;
 
 import java.io.IOException;
@@ -21,8 +14,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.IntSummaryStatistics;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
@@ -33,7 +24,6 @@ import java.util.stream.Stream;
 import com.google.common.collect.Lists;
 
 import junit.framework.TestCase;
-import name.cdd.study.guava.funcprogram.City;
 
 public class Chapter2Study extends TestCase
 {
@@ -58,6 +48,11 @@ public class Chapter2Study extends TestCase
     @SuppressWarnings ("unused")
     public void testStream() throws IOException
     {
+        assertEquals(5050, Stream.iterate(1, x -> x + 1).limit(100).parallel().collect(Collectors.summarizingInt(x -> x)).getSum());
+        assertEquals(5050, IntStream.rangeClosed(1, 100).sum());
+        assertEquals(5050, IntStream.rangeClosed(1, 100).sum());
+        assertEquals(5050, IntStream.rangeClosed(1, 100).reduce(Integer::sum).getAsInt());
+        
         Stream<String> s = Stream.generate(() -> "aaa");
         s = Stream.generate(() ->"aaa").limit(100);
         
@@ -199,5 +194,11 @@ public class Chapter2Study extends TestCase
 //            mapping(City::getName,
 //            joining(", "))));
     }
+    
+    public void testStream_groupingby()
+    {
+        //º˚StreamExercise_ori¿‡
+    }
+    
     
 }

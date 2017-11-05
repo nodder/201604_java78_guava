@@ -10,5 +10,4 @@ public class PopulationPredicate implements Predicate<City>
         return input.getPopulation() <= 500000;
     }
     
-    
 }

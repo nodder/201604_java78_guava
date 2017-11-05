@@ -1,179 +1,139 @@
 package name.cdd.study;
 
-import static java.util.stream.Collectors.averagingInt;
-import static java.util.stream.Collectors.counting;
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.mapping;
-import static java.util.stream.Collectors.reducing;
-import static java.util.stream.Collectors.summarizingInt;
-import static java.util.stream.Collectors.toList;
-
-import java.util.ArrayList;
-import java.util.IntSummaryStatistics;
-import java.util.Iterator;
+import java.io.IOException;
+import java.nio.file.FileVisitOption;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.TreeMap;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Properties;
+import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
 
 import junit.framework.TestCase;
 
 public class ForPublish extends TestCase
 {
-    public void test7()
+    /** 简化代码 */
+    public void test1()
     {
-        List<Employee> employees = mockEmplyees();
+        String[] strings = {"aaa", "b", "cc"};
         
-        Map<String, Long> map1 = employees.stream().collect(groupingBy(Employee::getMale, counting()));
-        System.out.println("男女员工人数分别：" + print(map1));
+       
         
-        
-        List<String> emplyeeNames = employees.stream().filter(e -> e.getSalary() > 10000).map(Employee::getName).collect(toList());
-        System.out.println("薪水大于10000的员工名字：" + print(emplyeeNames));
-        
-        String xx = employees.stream().filter(e -> e.getSalary() > 10000).collect(mapping(Employee::getName, joining(", ")));
-        System.out.println("薪水大于10000的员工名字：" + xx);
-        
-        String yyy = employees.stream().filter(e -> e.getSalary() > 10000).map(Employee::getName).reduce((x, y) -> x + ", " + y).get();
-        System.out.println("薪水大于10000的员工名字：" + yyy);
-        
-        Map<String, Double> x = employees.stream().collect(groupingBy((Employee e) -> agePeriod(e.getAge()), averagingInt(Employee::getSalary)));
-        System.out.println("各年龄段员工薪水平均值：" + print(x));
+        Arrays.sort(strings, (String s1, String s2) -> Integer.compare(s1.length(), s2.length()));
+        //类型推断
+        Arrays.sort(strings, (s1, s2) -> Integer.compare(s1.length(), s2.length()));
+        Arrays.sort(strings, Comparator.comparing(String::length));
         
         
-        //排序
-        Map<String, Double> y = employees.stream().collect(groupingBy((Employee e) -> agePeriod(e.getAge()), TreeMap::new, averagingInt(Employee::getSalary)));
-        System.out.println("各年龄段员工薪水平均值：" + print(y));
-        
-        
-        IntSummaryStatistics salarySummary = employees.stream().collect(mapping(Employee::getSalary, summarizingInt(s -> s)));
-        System.out.println("最低工资:" + salarySummary.getMin()) ;
-        System.out.println("最高工资:" + salarySummary.getMax()) ;
-        System.out.println("平均工资:" + salarySummary.getAverage()) ;
-        System.out.println("员工数:" + salarySummary.getCount()) ;
-        
-        
-        Integer xxx = employees.stream().collect(reducing(0, Employee::getSalary, Integer::sum));
-        System.out.println(xxx);
+        Arrays.sort(strings, new LengthComparator());
     }
     
-
-    private String agePeriod(int age)
+    class LengthComparator implements Comparator<String> {
+        public int compare(String s1, String s2) {
+            return Integer.compare(s1.length(), s2.length());
+        }
+    }
+    
+    public void test2()
     {
-        final int decade = age/10;
-        
-        return decade * 10 + "~" + (decade + 1) * 10;
-   }
-
-    private <T, F> String print(Map<T, F> map)
-    {
-        Iterator<Entry<T, F>> it = map.entrySet().iterator();
-        
-        String result = "";
-        while(it.hasNext())
+        Integer[] seqMeter = new Integer[10];
+        for(int i = 0; i < 10; i++)
         {
-            Entry<T, F> entry = it.next();
-            result += entry.getKey() + ": " + entry.getValue() + "; ";
+            seqMeter[i] = i + 1;
         }
         
-        return result;
-    }
-    
-    private <T> String print(List<T> list)
-    {
-        return Joiner.on(", ").join(list);
-    }
-
-    private List<Employee> mockEmplyees()
-    {
-        List<Employee> employees = new ArrayList<>();
-        employees.add(employee(100, "Chen", "male", 8000, 29));
-        employees.add(employee(101, "Zhang", "male", 11000, 28));
-        employees.add(employee(102, "Wang", "female", 15000, 33));
-        employees.add(employee(103, "Mei", "male", 7000, 26));
-        employees.add(employee(104, "Yang", "male", 21000, 38));
-        employees.add(employee(105, "Sun", "female", 9000, 37));
-        employees.add(employee(106, "Fu", "female", 19000, 32));
-        employees.add(employee(107, "Fan", "male", 8100, 30));
-        employees.add(employee(108, "Shi", "male", 22000, 41));
-        employees.add(employee(109, "Liang", "female", 13000, 25));
+        Double[] seqInch = new Double[seqMeter.length];
+        for(int i = 0; i < seqInch.length; i++)
+        {
+            seqInch[i] = seqMeter[i] * 39.37;
+        }
         
-        return employees;
+        double sum = 0;
+        for(int i = 0; i < seqInch.length; i++)
+        {
+            sum += seqInch[i];
+        }
+        
+        System.out.println(sum);
+        
+        /////////////////////////////////////////////
+        double sum2 = Stream.iterate(1, i -> i + 1).limit(10).mapToDouble(i -> i * 39.37).sum();
+        System.out.println(sum2);
+        
     }
     
-    private Employee employee(int id, String name,String male,  int salary, int age)
+    public void test3()
     {
-        return new Employee(id, name, male, salary, age);
-    }
-
-//    class Employee
-//    {
-//        private int id ;
-//        private String name;
-//        private String male; //male, female
-//        private int salary;
-//        private int age;
+        List<Integer> nums = Lists.newArrayList(1, 1, null, 2, 3, 4, null, 5, 6, 7, 8, 9, 10);
+        
+//        int sum = nums.stream().filter(Objects::nonNull).distinct()
+//                               .mapToInt(num -> num * 2).skip(2).limit(4)
+//                               .peek(System.out::println).sum();
 //        
-//        public Employee(int id, String name,String male,  int salary, int age)
-//        {
-//            this.id = id;
-//            this.name = name;
-//            this.male = male;
-//            this.salary = salary;
-//            this.age = age;
-//        }
-//
-//        public int getId()
-//        {
-//            return id;
-//        }
-//
-//        public void setId(int id)
-//        {
-//            this.id = id;
-//        }
-//
-//        public String getName()
-//        {
-//            return name;
-//        }
-//
-//        public void setName(String name)
-//        {
-//            this.name = name;
-//        }
-//
-//        public String getMale()
-//        {
-//            return male;
-//        }
-//
-//        public void setMale(String male)
-//        {
-//            this.male = male;
-//        }
-//
-//        public int getSalary()
-//        {
-//            return salary;
-//        }
-//
-//        public void setSalary(int salary)
-//        {
-//            this.salary = salary;
-//        }
-//
-//        public int getAge()
-//        {
-//            return age;
-//        }
-//
-//        public void setAge(int age)
-//        {
-//            this.age = age;
-//        }
-//    }
+        int sum = nums.stream().parallel().filter(Objects::nonNull).distinct()
+        .mapToInt(num -> num * 2).skip(2).limit(4)
+        .peek(System.out::println).sum();
+        
+        System.out.println("sum is:" + sum);
+    }
+    
+    @SuppressWarnings ("null")
+    public void test4()
+    {
+        Logger logger = null;
+        int x = 0, y = 0;
+        logger.info("x: " + x + ", y: " + y);
+
+    }
+    
+    public void test5() throws IOException
+    {
+        try (Stream<String> lines = Files.lines(Paths.get("c:/test.txt"))) {
+            Optional<String> passwordEntry
+            = lines.filter(s -> s.contains("password")).findFirst();
+            
+            System.out.println(passwordEntry.orElse("not found"));
+            } // The stream, and hence the file, will be closed here
+        
+        
+        try (Stream<String> lines = Files.lines(Paths.get("c:/test.txt"))) {
+            Optional<String> passwordEntry
+            = lines.filter(s -> s.contains("password")).onClose(() -> System.out.println("closing")).findFirst();
+            
+            System.out.println(passwordEntry.orElse("not found"));
+            } // The stream, and hence the file, will be closed here
+    }
+    
+    public void test6() throws IOException
+    {
+        assertEquals(1000000, 1_000_000);
+        
+        Files.walk(Paths.get("d:\\maven"), FileVisitOption.FOLLOW_LINKS);
+        
+        assertEquals("c:/ftpdir", String.join("/", "c:", "ftpdir"));
+        assertEquals("c:/ftpdir", Joiner.on('/').join("c:", "ftpdir"));
+    }
+    
+    public int readDuration(Properties props, String name)
+    {
+        String value = props.getProperty(name);
+        if(value != null)
+        {
+            int i = Integer.parseInt(value);
+            if(i > 0)
+            {
+                return i;
+            }
+        }
+        
+        return 0;
+    }
 }

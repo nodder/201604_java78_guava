@@ -36,7 +36,7 @@ public class Chapter6_Concurrency extends TestCase
         LongAdder adder = new LongAdder();
         adder.increment();
         adder.increment();
-        
+        adder.add(2);
         assertEquals(2, adder.intValue());
         assertEquals(2, adder.sum());
     }
